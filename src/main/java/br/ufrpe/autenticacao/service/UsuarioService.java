@@ -66,7 +66,7 @@ public class UsuarioService {
         usuario.setStatus(StatusUsuario.PENDENTE_VERIFICACAO);
         usuario.setRole(Role.CLIENTE);
 
-        usuario = usuarioRepository.save(usuario);
+        usuario = usuarioRepository.saveAndFlush(usuario);
 
         criarEEnviarTokenVerificacaoEmail(usuario);
 

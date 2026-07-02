@@ -34,7 +34,7 @@ public class Usuario {
 
     @NotBlank(message = "CPF é obrigatório")
     @CPF(message = "CPF inválido")
-    @Column(nullable = false, length = 11, updatable = false)
+    @Column(nullable = false, length = 14, updatable = false)
     private String cpf;
 
     @NotBlank(message = "Telefone é obrigatório")
