@@ -11,6 +11,8 @@ import br.ufrpe.autenticacao.repository.UsuarioRepository;
 import br.ufrpe.autenticacao.request.CadastroUsuarioRequest;
 import br.ufrpe.autenticacao.request.TrocarEmailRequest;
 import br.ufrpe.autenticacao.security.TokenHashUtil;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +45,9 @@ public class UsuarioService {
         this.tokenHashUtil = tokenHashUtil;
         this.emailService = emailService;
     }
+
+    @Value("${autenticacao.frontend}")
+    private String frontend;
 
     @Transactional
     public UsuarioResponseDTO cadastrar(CadastroUsuarioRequest request) {
@@ -113,7 +118,7 @@ public class UsuarioService {
             token.setDataExpiracao(LocalDateTime.now().plusMinutes(EXPIRACAO_TOKEN_RECUPERACAO_MINUTOS));
             tokenVerificacaoRepository.save(token);
 
-            String link = "https://SEU-FRONTEND/redefinir-senha?token=" + tokenBruto;
+            String link = frontend+"/redefinir-senha?token=" + tokenBruto;
             emailService.enviarEmailRecuperacaoSenha(usuario.getEmail(), usuario.getNome(), link);
         });
     }
@@ -168,7 +173,7 @@ public class UsuarioService {
         tokenVerificacaoRepository.save(token);
 
         // O link vai para o NOVO email, garantindo que o dono realmente tem acesso a ele
-        String link = "https://SEU-FRONTEND/confirmar-novo-email?token=" + tokenBruto;
+        String link = frontend+"/confirmar-novo-email?token=" + tokenBruto;
         emailService.enviarEmailConfirmacaoTrocaEmail(request.getNovoEmail(), usuario.getNome(), link);
     }
 
@@ -205,7 +210,7 @@ public class UsuarioService {
         token.setDataExpiracao(LocalDateTime.now().plusHours(EXPIRACAO_TOKEN_VERIFICACAO_HORAS));
         tokenVerificacaoRepository.save(token);
 
-        String link = "https://SEU-FRONTEND/verificar-email?token=" + tokenBruto;
+        String link = frontend+"/verificar-email?token=" + tokenBruto;
         emailService.enviarEmailVerificacao(usuario.getEmail(), usuario.getNome(), link);
     }
 

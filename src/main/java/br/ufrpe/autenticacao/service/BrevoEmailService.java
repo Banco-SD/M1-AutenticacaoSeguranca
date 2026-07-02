@@ -10,18 +10,6 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Envia email via API HTTP da Brevo (https://api.brevo.com) em vez de SMTP.
- *
- * Isso é proposital: muitos provedores de deploy gratuitos (Render, Railway,
- * etc.) bloqueiam as portas SMTP (25/465/587) na saída, mas nunca bloqueiam
- * HTTPS (443). Como a Brevo (e a maioria dos serviços modernos de email
- * transacional, como Resend, SendGrid, Mailgun) oferece API REST sobre
- * HTTPS, não existe esse problema.
- *
- * Free tier da Brevo: 300 emails/dia, sem cartão de crédito.
- * Docs: https://developers.brevo.com/reference/sendtransacemail
- */
 @Service
 public class BrevoEmailService implements EmailService {
 
