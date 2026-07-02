@@ -36,6 +36,11 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(resposta);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioResponseDTO> buscarPorId(@PathVariable UUID id) {
+        return ResponseEntity.ok(usuarioService.buscarPorId(id));
+    }
+
     @GetMapping("/me")
     public ResponseEntity<UsuarioResponseDTO> meuPerfil(@AuthenticationPrincipal CustomUserDetails principal) {
         return ResponseEntity.ok(usuarioService.buscarPorId(principal.getUsuario().getId()));
